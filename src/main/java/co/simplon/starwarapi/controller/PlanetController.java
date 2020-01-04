@@ -5,9 +5,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import co.simplon.starwarapi.repository.PlanetRepository;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.swing.text.html.HTML;
 import javax.swing.text.html.Option;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -29,8 +31,14 @@ public class PlanetController {
     }
 
     @PostMapping("/create")
-    public void addPlanet(@RequestBody Planet planet) {
+    public ResponseEntity<Planet> addPlanet(@RequestBody Planet planet) {
         planetRepository.save(planet);
+        URI location = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("{id}")
+                .buildAndExpand(planet.getId())
+                .toUri();
+        return ResponseEntity.created(location).build();
     }
 
     @GetMapping("/{planetId}")
