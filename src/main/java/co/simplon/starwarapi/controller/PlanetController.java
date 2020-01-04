@@ -1,6 +1,8 @@
 package co.simplon.starwarapi.controller;
 
 import co.simplon.starwarapi.model.Planet;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+@Api(value = "API pour les opérations CRUD sur les planetes.")
 @RestController
 @RequestMapping("/api/planets")
 public class PlanetController {
@@ -23,6 +26,7 @@ public class PlanetController {
         this.planetRepository = planetRepository;
     }
 
+    @ApiOperation(value = "Récupère la liste des planetes au format JSON")
     @GetMapping("/list")
     public ResponseEntity<List<Planet>> listPlanets(){
         List<Planet> response;
@@ -30,6 +34,7 @@ public class PlanetController {
         return ResponseEntity.ok(response);
     }
 
+    @ApiOperation(value = "Créer une planete en BD")
     @PostMapping("/create")
     public ResponseEntity<Planet> addPlanet(@RequestBody Planet planet) {
         planetRepository.save(planet);
@@ -41,11 +46,13 @@ public class PlanetController {
         return ResponseEntity.created(location).build();
     }
 
+    @ApiOperation(value = "Récupère une planete grâce à son ID")
     @GetMapping("/{planetId}")
     public ResponseEntity<Planet> getOne(@PathVariable Long planetId) {
         return ResponseEntity.ok(planetRepository.findById(planetId).get());
     }
 
+    @ApiOperation(value = "Mettre à jour une planete grâce à son ID")
     @PutMapping("/update/{planetId}")
     public ResponseEntity<Planet> updatePlanet(@RequestBody Planet planet,@PathVariable Long planetId){
         if (planetRepository.existsById(planetId) && planet.getId().equals(planetId)){
@@ -54,6 +61,7 @@ public class PlanetController {
         else return ResponseEntity.notFound().build();
     }
 
+    @ApiOperation(value = "Supprimer une planete en BD à partir de son ID")
     @DeleteMapping("/delete/{planetId}")
     public ResponseEntity<Planet> deletePlanet(@PathVariable Long planetId){
         if (planetRepository.existsById(planetId)){
