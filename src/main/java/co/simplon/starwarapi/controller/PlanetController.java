@@ -18,7 +18,7 @@ import java.util.Optional;
 
 @Api(value = "API pour les opérations CRUD sur les planetes.")
 @RestController
-@RequestMapping("/api/planet")
+@RequestMapping("/api/planets")
 public class PlanetController {
     private PlanetRepository planetRepository;
 
