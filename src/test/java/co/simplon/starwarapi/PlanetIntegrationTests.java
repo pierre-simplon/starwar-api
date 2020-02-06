@@ -77,7 +77,7 @@ public class PlanetIntegrationTests {
 
         HttpEntity<Planet> planetHttpEntity = new HttpEntity<>(newPlanet, null);
 
-        // When posting this new planet to /api/planet
+        // When posting this new planet to /api/planet/create
         ResponseEntity<Planet> responseEntity = this.restTemplate.postForEntity("/api/planets/create", planetHttpEntity, Planet.class);
         Planet createdPlanet = responseEntity.getBody();
 
@@ -100,7 +100,7 @@ public class PlanetIntegrationTests {
 
         HttpEntity<Planet> planetHttpEntity = new HttpEntity<>(existingPlanet, null);
 
-        // When putting this existing planet to /api/planet/1
+        // When putting this existing planet to /api/planet/update/1
         ResponseEntity<Planet> responseEntity = this.restTemplate.exchange("/api/planets/update/{planetId}", HttpMethod.PUT, planetHttpEntity, Planet.class, 1);
         Planet updatedPlanet = responseEntity.getBody();
 
@@ -121,7 +121,7 @@ public class PlanetIntegrationTests {
 
         HttpEntity<Planet> planetHttpEntity = new HttpEntity<>(nonExistingPlanet, null);
 
-        // When putting this planet to /api/planet/2000
+        // When putting this planet to /api/planet/update/2000
         ResponseEntity<Planet> responseEntity = this.restTemplate.exchange("/api/planets/update/{planetId}", HttpMethod.PUT, planetHttpEntity, Planet.class, 2000L);
 
         // Then NOT_FOUND status code should be sent back.
