@@ -36,20 +36,28 @@ public class PlanetController {
 
     @ApiOperation(value = "Créer une planete en BD")
     @PostMapping("/create")
-    public ResponseEntity<Planet> addPlanet(@RequestBody Planet planet) {
-        planetRepository.save(planet);
-        URI location = ServletUriComponentsBuilder
-                .fromCurrentRequest()
-                .path("{id}")
-                .buildAndExpand(planet.getId())
-                .toUri();
-        return ResponseEntity.created(location).build();
+    public ResponseEntity<Planet> addPlanet(@RequestBody Planet planetToCreate) {
+          Planet planet = planetRepository.save(planetToCreate);
+          return ResponseEntity.ok(planet);
+          // TODO Fix to generate a return code 'CREATED' instead of 'OK'
+//        planetRepository.save(planet);
+//          URI location = ServletUriComponentsBuilder
+//                .fromCurrentRequest()
+//                .path("{id}")
+//                .buildAndExpand(planet.getId())
+//                .toUri();
+//         return ResponseEntity.created(location).build();
+
     }
 
     @ApiOperation(value = "Récupère une planete grâce à son ID")
     @GetMapping("/{planetId}")
     public ResponseEntity<Planet> getOne(@PathVariable Long planetId) {
-        return ResponseEntity.ok(planetRepository.findById(planetId).get());
+        Optional<Planet> planet = planetRepository.findById(planetId);
+        if (planet.isPresent()) {
+            return ResponseEntity.ok(planetRepository.findById(planetId).get());
+        }
+        return ResponseEntity.notFound().build();
     }
 
     @ApiOperation(value = "Mettre à jour une planete grâce à son ID")

@@ -37,6 +37,15 @@ public class Planet {
     public Planet(){
     }
 
+    public Planet(String planetName) {
+        setPlanetName(planetName);
+    }
+
+    public Planet(long l, String newName) {
+        setPlanetName(newName);
+        setId(l);
+    }
+
     public Long getId() {
         return id;
     }
